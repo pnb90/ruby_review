@@ -1,3 +1,11 @@
+ module Reportable #list of behaviors able to given to classes, -able is common naming convention
+  def send_report
+    puts "Sending report..."
+    # code to send report
+    puts "Email sent."
+  end
+ end
+
  class Employee
   attr_reader :first_name, :last_name, :active
   attr_writer :active
@@ -19,16 +27,13 @@
 end
 
 class Manager < Employee
+  include Reportable #calls the module 
+
   def initialize(input_options)
     super(input_options)
     @employees = input_options[:employees]
   end
 
-  def send_report
-    puts "Sending report..."
-    # code to send report
-    puts "Email sent."
-  end
 
   def give_all_raises
     # input: list of employee objects for this manager - aka @employees
@@ -53,10 +58,11 @@ class Manager < Employee
     @employees.each.do |employee|
       employee.active = false 
     end
-  end
+  end 
 
+class Intern < Employee
+  include Reportable #include line usually the first line, also known as a mix-in
 end
-
 
 employee_1 = Employee.new(
                           first_name: "Nick", 
@@ -86,10 +92,22 @@ manager = Manager.new(
 # employee_1.print_info
 # employee_2.print_info
 
-p employee_1.active
-p employee_2.active 
+# p employee_1.active
+# p employee_2.active 
 
-p manager.fire_all_employees
+# p manager.fire_all_employees
 
-p employee_1.active
-p employee_2.active
+# p employee_1.active
+# p employee_2.active
+
+intern = Intern.new(
+                    first_name: "Jimmy",
+                    last_name: "Olsen",
+                    salary: 25000,
+                    active: true
+                    )
+
+p intern
+
+intern.print_info
+intern.send_report
